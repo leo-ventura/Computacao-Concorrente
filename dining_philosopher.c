@@ -34,19 +34,19 @@
 sem_t mutex;
 sem_t let_me_eat;
 sem_t waiter_is_free;
-sem_t can_eat[N+1];
-sem_t turn[N+1];
+sem_t can_eat[N];
+sem_t turn[N];
 
 // defining some functions
 void *philosopher(void *);
-void *waiter();
+void *waiter(void *);
 void enqueue(int);
-int dequeue();
+int dequeue(void);
 void ask_for_chopstick(int);
 void return_chopstick(int);
 
-int phil_num[N+1];
-int state[N+1];
+int phil_num[N];
+int state[N];
 int current;
 int chopsticks_available = N;
 
@@ -66,22 +66,26 @@ void enqueue(int ph_id) {
     if(!root) { // checks if our queue is empty
         root = n;
     } else {
-        // iterating in the queue until it finds an empty node
+        // iterating in the queue until it finds the last node
         Node *it = root;
 
-        while(it) {
+        while(it->next) {
             it = it->next;
         }
-        it = n;
+        it->next = n;
     }
 }
+
 int dequeue() {
     int ph_id = root->id;
+    Node *old_root = root;
     root = root->next;
+    free(old_root);
     return ph_id;
 }
 
-int main() {
+
+int main(void) {
     printf("Dining philosopher problem.\n");
 
     pthread_t waiter_thread;
@@ -93,43 +97,45 @@ int main() {
 
     // initializing waiter
     pthread_create(&waiter_thread, NULL, waiter, NULL);
+    sem_init(&waiter_is_free, 0, 1);
 
     sleep(2);
 
     int i;
 
     // initializing semaphores
-    for (i = 1; i <= N; i++) {
+    for (i = 0; i < N; i++) {
         sem_init(&can_eat[i], 0, 0);
         sem_init(&turn[i], 0, 0);
     }
 
     // initializing philosophers
-    for(i = 1; i <= N; i++) {
+    for (i = 0; i < N; i++)
         phil_num[i] = i;
+
+    for (i = 0; i < N; i++)
         pthread_create(&threads_id[i], NULL, philosopher, &phil_num[i]);
-    }
-    for (i = 1; i <= N; i++)
+
+    // finalizing
+    pthread_join(waiter_thread, NULL);
+    for (i = 0; i < N; i++)
         pthread_join(threads_id[i], NULL);
+
+    return 0;
 }
 
 // handler to act as our waiter
-void *waiter() {
-    // initializing semaphore "waiter_is_free" as 0,1 to let the philosophers know that it can serve them right away.
-    sem_init(&waiter_is_free, 0, 1);
+void *waiter(void *num) {
     printf(BLUE "Waiter is here!\n" RESET);
     while(1) {
         // waits until a philosopher asks to eat
         sem_wait(&let_me_eat);
         {
-            // printf(YELLOW "[DEBUG - WAITER] Waiter received a let_me_eat signal and now waits for the mutex\n " RESET);
             // can only change the value of available chopsticks if you have the mutex
             sem_wait(&mutex);
             {
                 // checks if there are enough chopsticks
                 if(chopsticks_available > 1) {
-                    // sem_post(&can_eat[current]); // send a signal to the current philosopher so he can eat
-                    // printf(YELLOW "[DEBUG - QUEUE] There are enough chopsticks. Philosopher %d is allowed to eat!\n" RESET, c);
                     sem_post(&can_eat[current]);
                     chopsticks_available -= 2;
                 } else {
@@ -156,17 +162,10 @@ void *philosopher(void *num) {
 }
 
 void ask_for_chopstick(int ph_num) {
-
     sem_wait(&waiter_is_free);
-    {
-        // enqueue(ph_num);
-        current = ph_num;
-        // printf(YELLOW "[DEBUG - QUEUE] Philosopher %d is now on queue\n" RESET, ph_num);
-        sem_post(&let_me_eat);
-        // printf(YELLOW "[DEBUG] Philosopher %d is waiting a signal that he can eat\n" RESET, ph_num);
-        sem_wait(&can_eat[ph_num]);
-        // printf(YELLOW "[DEBUG] Philosopher %d just received a signal that he can eat\n" RESET, ph_num);
-    }
+    current = ph_num;
+    sem_post(&let_me_eat);
+    sem_wait(&can_eat[ph_num]);
 }
 
 void return_chopstick(int ph_num) {
