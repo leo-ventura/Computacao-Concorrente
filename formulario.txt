@@ -1,0 +1,39 @@
+Nome dos integrantes do grupo
+Victor Pires, Alexandre Costard, Leonardo Ventura e Breno Tostes
+
+DRE dos integrantes do grupo
+113051532
+
+Link github do trabalho
+https://github.com/leo-ventura/Computacao-Concorrente
+
+Número do grupo que consta na coluna A em https://docs.google.com/spreadsheets/d/1i8MrQpg6km_27_VbBQ2_9YRJ2Fhj4JCrXxKZAH_Ggw4/edit#gid=0
+Filósofos jantando
+1
+
+Em https://github.com/masbicudo/Trabalhos-UFRJ/tree/master/Monitoria-Comp-Conc/Dining-Philosophers temos 7 soluções para o problema dos filósofos jantando. Três delas tem problemas de deadlock, uma tem problema de starvation, e as outras três tem problemas mais sutis.  Explique, claramente, como funciona e porque cada solução tem um problema.
+Explique como funciona dining_deadlock_mutex_1.c e porque ela tem problema de deadlock
+
+Explique como funciona dining_working_eventual_deadlock.c e porque ela tem problema de deadlock
+
+Explique como funciona dining_deadlock_semaphore_1.c e porque ela tem problema de deadlock
+
+Explique como funciona dining_starve_1.c e porque ela tem problema de starvation
+
+Explique como funciona dining_working_1.c e indique um possível problema dessa solução
+
+Explique como funciona dining_working_1_nosleep.c e indique um possível problema dessa solução
+
+Explique como funciona dining_working_2.c e indique um possível problema dessa solução
+
+Proponha uma solução para o problema dos filósofos jantando, que não tenha os inconvenientes acima. Sua solução também tem algum problema? Implemente sua solução e coloque no github. Além disso, inclua comentários adicionais abaixo.
+Cigarette smokers
+
+https://en.wikipedia.org/wiki/Cigarette_smokers_problem
+Explique, com suas palavras, o problema dos fumantes
+Proponha uma solução para o problema dos fumantes. Sua solução têm alguns problemas? Implemente sua solução e coloque no github. Além disso, inclua comentários adicionais abaixo.
+
+Barbeiro dorminhoco
+https://en.wikipedia.org/wiki/Sleeping_barber_problem
+Explique, com suas palavras, o problema do barbeiro dorminhoco
+Proponha uma solução para o problema do barbeiro dorminhoco. Sua solução têm alguns problemas? Implemente sua solução e coloque no github. Além disso, inclua comentários adicionais abaixo.
