@@ -15,6 +15,7 @@ Em https://github.com/masbicudo/Trabalhos-UFRJ/tree/master/Monitoria-Comp-Conc/D
 Explique como funciona dining_deadlock_mutex_1.c e porque ela tem problema de deadlock
 
 Explique como funciona dining_working_eventual_deadlock.c e porque ela tem problema de deadlock
+A função sem_wait não é atômica, então, quando causado um delay maior, duas pessoas podem entrar na região crítica.
 
 Explique como funciona dining_deadlock_semaphore_1.c e porque ela tem problema de deadlock
 
