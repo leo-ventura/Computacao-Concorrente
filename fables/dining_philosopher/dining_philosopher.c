@@ -56,7 +56,7 @@ void enqueue(int ph_id) {
     if(!root) { // checks if our queue is empty
         root = n;
     } else {
-        // iterating in the queue until it finds the last node
+        // iterating through the queue until it finds the last node
         Node *it = root;
 
         while(it->next) {
