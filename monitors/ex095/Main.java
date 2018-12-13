@@ -101,9 +101,9 @@ class Account2 implements Runnable {
             System.out.println("[" + Thread.currentThread().getId() + "]" + " ordinary withdrawing " + ordinaryValue);
             this.account.ordinaryWithdraw(ordinaryValue);
 
-            int preferedValue = ThreadLocalRandom.current().nextInt(1, 10);
-            System.out.println("[" + Thread.currentThread().getId() + "]" + " prefered withdrawing " + preferedValue);
-            this.account.preferedWithdraw(preferedValue);
+            int preferredValue = ThreadLocalRandom.current().nextInt(1, 10);
+            System.out.println("[" + Thread.currentThread().getId() + "]" + " preferred withdrawing " + preferredValue);
+            this.account.preferredWithdraw(preferredValue);
 
         } catch(InterruptedException e) {
             e.printStackTrace();

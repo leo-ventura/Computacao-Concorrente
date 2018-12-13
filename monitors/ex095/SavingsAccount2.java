@@ -15,7 +15,7 @@ public class SavingsAccount2 {
         return this.balance;
     }
 
-    int getpreferredWithdrawCount() {
+    int getPreferredWithdrawCount() {
         return this.preferredWithdrawCount;
     }
 
