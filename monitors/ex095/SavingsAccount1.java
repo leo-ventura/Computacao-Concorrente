@@ -1,12 +1,12 @@
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 
 public class SavingsAccount1 {
     int balance;
-    Reentrant lock = ReentrantLock();
+    ReentrantLock lock = new ReentrantLock();
     Condition balanceCondition = lock.newCondition();
 
-    SavingsAccount(int balance) {
+    SavingsAccount1(int balance) {
         this.balance = balance;
     }
 
@@ -24,10 +24,11 @@ public class SavingsAccount1 {
         }
     }
 
-    void withdraw(int k) throws Exception {
+    void withdraw(int k) throws InterruptedException {
         try {
             lock.lock();
             while(this.balance < k) {
+                System.out.println("[*] Account blocked! Waiting credit to proceed.");
                 balanceCondition.await();
             }
             this.balance -= k;
