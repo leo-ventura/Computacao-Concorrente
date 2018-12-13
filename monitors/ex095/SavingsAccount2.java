@@ -5,7 +5,7 @@ public class SavingsAccount2 {
     int balance;
     ReentrantLock lock = new ReentrantLock();
     Condition balanceCondition = lock.newCondition();
-    int preferredWithdrawCount  = 0;
+    int preferredWithdrawCount = 0;
 
     SavingsAccount2(int balance) {
         this.balance = balance;
