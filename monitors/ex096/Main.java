@@ -85,6 +85,7 @@ class FemaleThread implements Runnable {
         try {
             Thread.sleep(arrival);
 //            System.out.println("- F\t" + (System.currentTimeMillis() - Main.start));            bathroom.enterFemale();
+            bathroom.enterFemale();
             Thread.sleep(action);
             bathroom.leaveFemale();
         } catch (InterruptedException e) {
