@@ -21,7 +21,7 @@ Isso se dá pelo fato de que uma thread poderá ficar em espera infinita se a co
 nunca receber dinheiro suficiente. 
 Podemos confirmar o pensamento se levarmos em conta o "pior caso":
 <ul>
-    <li> todas as contas tentam transferir saindo de apenas uma conta para as outras, o débito máximo que se chegará será 100 * n (quantidade de threads). </li>
-    <li> assim, se tivermos um valor de n <= 10, tudo funcionaria bem, pois mesmo que tentássemos retirar somente dela, ao receber 1000 da thread Boss, o débito seria realizado e a operação retornaria. </li>
-    <li> entretanto, se houver um número de threads > 10, uma das contas ficará em débito eterno, visto que não seria possível abater o valor recebido.</li>
+    <li> todas as contas tentam transferir saindo de apenas uma conta (vamos chamá-la de conta1, começando com saldo 0) para as outras, o débito máximo que se chegará será 100 * n (quantidade de threads)</li>
+    <li> assim, se tivermos um valor de n <= 10, tudo funcionaria bem, pois mesmo que tentássemos retirar somente da conta1, ao receber 1000 da thread Boss, o débito seria realizado e a operação retornaria. </li>
+    <li> entretanto, se houver um número de threads > 10, a conta1 ficará devendo eternamente, visto que não seria possível abater o valor.</li>
 </ul>
