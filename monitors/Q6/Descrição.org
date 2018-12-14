@@ -1,0 +1,59 @@
+* Questão 6
+** a
+Diretor chama o preso antes dele estar na sua cela, logo ele não ouve
+o chamado. Em termos do programa, isso quer dizer que ele pode ficar
+esperando o preso ir para a cela antes do preso começar a rodar seu
+método principal (live). Assim, após o diretor mandar o preso ir para
+o quarto (p.gotoRoom()) e ficar esperando (this.wait()), o preso vai
+para a cela (this.state = IN_CELL) e espera ser chamado (this.wait()).
+
+** b
+Para substituir os this.wait() por objeto.wait(), temos que
+identificar com clareza quais condições fazem as threads entrar em
+espera e quais as fazem ser notificadas. A primeira condição
+identificada é a adicionada no item anterior: o diretor espera um
+preso chegar na cela. A segunda é a sugerida pelo enunciado: o diretor
+espera o preso sair e fechar a porta. A terceira é a saída de um preso
+de sua cela, podendo ser para ir para a sala, para ser liberto ou para
+ser executado. Finalmente, como paramos de usar os próprios objetos
+Prisoner e Warden para sincronização, precisamos adicionar uma espera
+da primeira condição (presos voltarem às suas celas) antes que o
+diretor os liberte ou execute.
+
+** c
+Há alguns motivos colocar uma chamada wait() dentro de um
+while(condição) e não de um if(condição).
+
+Quando uma thread é notificada, não é garantido que ela vá conseguir o
+lock associado ao monitor. Assim, pode ser que ela acorde, perca a
+disputa pelo lock e precise novamente verificar que a condição que a
+fez entrar em espera continua valendo. Isso acontece, por exemplo
+quando temos diversas threads esperando no mesmo monitor. Caso elas
+estejam esperando em condições diferentes, como acontece nesse
+exercício, o problema é agravado, pois a thread pode
+receber uma notificação sem que sua condição tenha sequer
+mudado. Assim, como usamos apenas notifyAll para evitar problemas, se
+usássemos if no lugar de while a thread poderia ser acordada por outra
+condição e ela continuaria executando como se sua condição permitisse
+que ela acordasse.
+
+Outro motivo para usar while são os /spurious wakeups/, notificações
+que as threads podem receber fora do controle do programador. Assim,
+para deixar o programa mais robusto, é considerado uma boa prática
+colocar as chamadas wait() dentro de while.
+
+** d
+Para estender a solução, basta alterar o número de vezes que os presos
+ligam o interruptor para duas vezes e alterar o líder para desligar
+2n-2 vezes no lugar de n-1. Para garantir que não sabemos, deixamos o
+estado inicial aleatoriamente decidido entre aceso ou apagado.
+
+** desafios encontrados
+- O uso do this.wait torna o código mais difícil de se ler e, nesse
+  caso, mistura esperas por motivos completamente diferentes.
+- Um problema encontrado com o código foi que não é inicializado. Isso
+  não gera bugs nos primeiros itens porque o java inicializa ints com
+  zero e isTriggerSet() retorna falso se o interruptor não estiver no
+  estado TRIG_ON (que é 1).
+- Uma dificuldade encontrada foi a simples análise do programa, que
+  por ser concorrente, tem comportamento difícil de se prever. 
