@@ -59,3 +59,28 @@ Como toda mulher que sai notifica o monitor de espera masculino, algum homem
 irá acordar e fechar o acesso para as mulheres. Assim, após a última mulher
 sair, todos os homens em espera entrarão no banheiro.
 
+
+
+** Desafios Encontrados
+- Conceitualmente, esse problema é bastante similar ao
+  FairReadWriteLock. O maior desafio foi encontrar uma maneira de
+  fazer homens e mulheres bloquearem o avanço dos outros sem que isso
+  gerasse deadlock. Em uma primeira tentativa, colocamos fizemos todas
+  as chegadas de uma categoria bloquearem o acesso da outra. Contudo,
+  isso pode gerar deadlocks, como quando uma mulher sai, sinaliza para
+  os homens que estão esperando e outra mulher chega antes que os
+  homens consigam entrar. Essa mulher vai encontrar seu acesso fechado
+  e vai fechar o acesso dos homens que estão esperando, deixando todos
+  esperando para entrar em um banheiro vazio. Assim, a solução que
+  encontramos, de uma pessoa ser benevolente e deixar todos da outra
+  categoria passarem na sua frente até que alguém da outra categoria
+  também seja benevolente e ceda a vez, não nos pareceu muito intuitiva.
+
+- O uso do parâmetro de justiça do ReentrantLock ajudou bastante a
+  pensar como evitar starvation entre threads do mesmo tipo.
+
+- A melhor solução que conseguimos usando synchronized usa dois
+  monitores, cada uma para um conjunto de espera. Contudo, dois
+  monitores implicam em dois locks distintos. Assim, também usamos o
+  próprio banheiro como monitor, fazendo os métodos serem synchronized.
+

@@ -30,3 +30,13 @@ duas vezes seguidas caso há threads esperando por outro quarto. Para evitar
 starvation dentro do mesmo quarto, usamos o parâmetro de justiça do
 ReentrantLock, que favorece threads que estão esperando há mais tempo.
 
+** Desafios encontrados
+- O maior desafio foi entender como resolver o problema usando as
+  estruturas e protótipos de função dados.
+- Dada a semelhança desse problema com o anterior, depois que
+  decidimos fazer o exitHandler administrar os quartos de maneira
+  sequencial, a solução foi relativamente fácil de se implementar.
+- O uso do método ReentrantLock.hasWaiters(Condition) simplificou a
+  implementação. Caso optássemos por não usá-lo, deveríamos ter um
+  contador para cada condição.
+
