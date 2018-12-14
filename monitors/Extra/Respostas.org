@@ -2,9 +2,15 @@
 *Implemente a operação test-and-set usando uma operação*
 *compare-and-exchange.*
 
+Nota: nas respostas que seguem, estamos supondo o seguinte:
+- notação inspirada em C
+- tas(&var) retorna o valor antigo de *var e faz *var = true (atomicamente)
+- cas(&var, guess, new) retorna *var == guess e faz *var = new caso o
+  teste anterior seja verdadeiro.
+
 #+BEGIN_SRC c
-  void tas(&var) {
-	return !cas(&var, false, true);
+  void tas(bool *var) {
+	return !cas(var, false, true);
   }
 #+END_SRC
 
@@ -15,7 +21,7 @@
   // em algum lugar
   volatile lock = false;
 
-  void cas(&var, guess, new) {
+  void cas(bool *var, bool guess, bool new) {
 	  while(tas(lock)) {}
 	  old = *var;
 	  if (old == guess)
