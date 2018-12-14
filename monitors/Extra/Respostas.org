@@ -1,0 +1,35 @@
+* Extras
+Implemente a operação test-and-set usando uma operação
+compare-and-exchange.
+
+#+BEGIN_SRC c
+  void tas(&var) {
+	return !cas(&var, false, true);
+  }
+#+END_SRC
+
+Tente implementar a operação compare-and-exchange usando
+test-and-set.
+
+#+BEGIN_SRC c
+  // em algum lugar
+  volatile lock = false;
+
+  void cas(&var, guess, new) {
+	  while(tas(lock)) {}
+	  old = *var;
+	  if (old == guess)
+		  *var = new;
+	  lock = false;
+	  return old == guess;
+  }
+#+END_SRC
+
+Você consegue fazer isso sem usar loops? Explique por que isso não é
+possível.Dica: qual é o número de consenso da operação TAS e da
+operação CAS?
+Não. CAS tem número de consenso infinito, enquanto TAS tem número de
+consenso 2. Ou seja, com CAS podemos resolver de maneira wait-free o
+problema do consenso com um número arbitrário de threads, enquanto TAS 
+só consegue resolvê-lo com no máximo 2. Assim, só conseguimos pensar
+em implementar CAS a partir de TAS se o TAS for usado para um lock.
